@@ -8,20 +8,6 @@ var BasicCard = require('./basicCard.js');
 	//ask the back question, prompt a response
 	//if response === back, console.log "correct!"
 
-var basicCards = []; //array to hold all the cards objects
-var getCardsFromFile = function() {
-	debugger;
-	var cardData = fs.readFileSync("basicPresidents.txt", "utf8"); //grabbing the info from the text file
-	var cardLines = cardData.split("\n"); //split the items in text file on a new line
-	for(i = 0; i < cardLines.length; i++){
-		var questionAnswerPair = cardLines[i].split(","); 
-		var answer = questionAnswerPair[0];
-		var question = questionAnswerPair[1];
-		var newCard = new BasicCard(question, answer);
-		basicCards.push(newCard);
-	}
-	//return basicCards;
-};
 
 var cardType = function(){
 	inquirer.prompt([{
@@ -41,6 +27,21 @@ var cardType = function(){
 			break;
 		}
 	});
+};
+
+var basicCards = []; //array to hold all the cards objects
+var getCardsFromFile = function() {
+	debugger;
+	var cardData = fs.readFileSync("basicPresidents.txt", "utf8"); //grabbing the info from the text file
+	var cardLines = cardData.split("\n"); //split the items in text file on a new line
+	for(i = 0; i < cardLines.length; i++){
+		var questionAnswerPair = cardLines[i].split(","); 
+		var answer = questionAnswerPair[0];
+		var question = questionAnswerPair[1];
+		var newCard = new BasicCard(question, answer);
+		basicCards.push(newCard);
+	}
+	//return basicCards;
 }; 	
 
 var loopCards = function(){
@@ -48,7 +49,7 @@ var loopCards = function(){
 	for (i = 0; i < basicCards.length; i++){
 		inquirer.prompt([{
 			type: "input",
-			message: basicCards[i].back,
+			message: basicCards[i].front,
 			name: "back"
 		}]).then(function(inquirerResponse){
 			if (inquirerResponse.back === basicCards[i].back){
