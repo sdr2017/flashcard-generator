@@ -3,11 +3,15 @@ var inquirer = require("inquirer");
 var BasicCard = require('./basicCard.js');
 var ClozeCard = require('./ClozeCard.js');
 
-//prompt basic or cloze
+//prompt add a card or run through cards
+//if add, prompt cloze or basic?
+	//if cloze, add to cloze file.
+	//if basic, add to basic file.
+//if run through, prompt basic or cloze
 //if basic or cloze, prompt question (front of card) associated with card type
-	//create a for loop that runs through the question array
+	//run through the question array
 	//ask the back question, prompt a response
-	//if response === back, console.log "correct!"
+	//if response === back, console.log "correct!" else "incorrect!"
 
 
 var cardType = function(){
