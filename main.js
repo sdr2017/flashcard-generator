@@ -1,6 +1,7 @@
 var fs = require('fs');
 var inquirer = require("inquirer");
 var BasicCard = require('./basicCard.js');
+var ClozeCard = require('./ClozeCard.js');
 
 //prompt basic or cloze
 //if basic or cloze, prompt question (front of card) associated with card type
@@ -15,23 +16,24 @@ var cardType = function(){
 		message: "Cloze or Basic?",
 		name: "card"
 	}]).then(function(inquirerResponse){
-		switch (inquirerResponse.card){
+		var whatKindOfCard = inquirerResponse.card.toLowerCase();
+		switch (whatKindOfCard){
 			case "basic": 
-			debugger;
-			getCardsFromFile();
-			askQuestion();
+				getBasicCardsFromFile();
+				askQuestion();
 			break;
 
 			case "cloze":
-			console.log("chose cloze");
+				getClozeCardsFromFile();
+				askClozeQuestion();
 			break;
 		}
 	});
 };
 
+
 var basicCards = []; //array to hold all the cards objects
-var getCardsFromFile = function() {
-	debugger;
+var getBasicCardsFromFile = function() {
 	var cardData = fs.readFileSync("basicPresidents.txt", "utf8"); //grabbing the info from the text file
 	var cardLines = cardData.split("\n"); //split the items in text file on a new line
 	for(i = 0; i < cardLines.length; i++){
@@ -40,9 +42,9 @@ var getCardsFromFile = function() {
 		var question = questionAnswerPair[1];
 		var newCard = new BasicCard(question, answer);
 		basicCards.push(newCard);
-	}
-	//return basicCards;
+	};
 }; 	
+
 
 var index = 0;
 function askQuestion(){
@@ -54,12 +56,12 @@ function askQuestion(){
 		}]).then(function(inquirerResponse){
 			var response = inquirerResponse.front.toUpperCase();
 			if (response === basicCards[index].back){
-				console.log("correct!");
+				console.log("Correct!");
 				index++;
 				askQuestion();
 			}
 			else {
-				console.log("incorrect!");
+				console.log("Incorrect!");
 				index++;
 				askQuestion();
 			};
@@ -67,26 +69,49 @@ function askQuestion(){
 	};
 };
 
-// var loopCards = function(){
-// 	debugger;
-// 	for (i = 0; i < basicCards.length; i++){
-// 		inquirer.prompt([{
-// 			type: "input",
-// 			message: basicCards[i].front,
-// 			name: "back"
-// 		}]).then(function(inquirerResponse){
-// 			if (inquirerResponse.back === basicCards[i].front){
-// 				console.log("correct!");
-// 			}
-// 			else {
-// 				console.log("wrong answer :(");
-// 			};
 
-// 		});
-// 	};
-// };
+var clozeCards = []; 
+var getClozeCardsFromFile = function() {
+	debugger;
+	var cardData = fs.readFileSync("clozePresidents.txt", "utf8"); //grabbing the info from the text file
+	var cardLines = cardData.split("\n"); //split the items in text file on a new line
+	for(i = 0; i < cardLines.length; i++){
+		var questionAnswerPair = cardLines[i].split(","); 
+		var answer = questionAnswerPair[0].toUpperCase();
+		var question = questionAnswerPair[1];
+		var newCard = new ClozeCard(question, answer);
+		clozeCards.push(newCard);
+	};
+}; 	
 
+
+var clozeIndex = 0;
+function askClozeQuestion(){
+	debugger;
+	if (clozeIndex < clozeCards.length){
+		inquirer.prompt ([{
+			name: "question",
+			message: "..." + clozeCards[clozeIndex].text,
+		}]).then(function(inquirerResponse){
+			var response = inquirerResponse.question.toUpperCase();
+			if (response === clozeCards[clozeIndex].cloze){
+				console.log("Correct! " + clozeCards[index].fullText);
+				clozeIndex++;
+				askClozeQuestion();
+			}
+			else {
+				console.log("Incorrect!" + clozeCards[index].fullText);
+				clozeIndex++;
+				askClozeQuestion();
+			};
+		});
+	};
+};
+
+
+
+console.log(clozeCards);
 cardType();
 
 
-//console.log(basicCardsFromFile);
+
