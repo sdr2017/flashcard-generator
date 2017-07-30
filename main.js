@@ -48,7 +48,6 @@ var getBasicCardsFromFile = function() {
 
 var index = 0;
 function askQuestion(){
-	debugger;
 	if (index < basicCards.length){
 		inquirer.prompt ([{
 			name: "front",
@@ -72,7 +71,6 @@ function askQuestion(){
 
 var clozeCards = []; 
 var getClozeCardsFromFile = function() {
-	debugger;
 	var cardData = fs.readFileSync("clozePresidents.txt", "utf8"); //grabbing the info from the text file
 	var cardLines = cardData.split("\n"); //split the items in text file on a new line
 	for(i = 0; i < cardLines.length; i++){
@@ -87,7 +85,6 @@ var getClozeCardsFromFile = function() {
 
 var clozeIndex = 0;
 function askClozeQuestion(){
-	debugger;
 	if (clozeIndex < clozeCards.length){
 		inquirer.prompt ([{
 			name: "question",
@@ -95,7 +92,7 @@ function askClozeQuestion(){
 		}]).then(function(inquirerResponse){
 			var response = inquirerResponse.question.toUpperCase();
 			if (response === clozeCards[clozeIndex].cloze){
-				console.log("Correct! " + clozeCards[index].fullText);
+				console.log("Correct! " + clozeCards[clozeIndex].fullText);
 				clozeIndex++;
 				askClozeQuestion();
 			}

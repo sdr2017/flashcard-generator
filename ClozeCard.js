@@ -1,8 +1,10 @@
+var fs = require('fs');
+var inquirer = require("inquirer");
 
 function ClozeCard(textArg, clozeArg){
 	this.text = textArg;
 	this.cloze = clozeArg;
-	this.fullText = this.text + this.cloze;
+	this.fullText = this.cloze + this.text;
 };
 
 
